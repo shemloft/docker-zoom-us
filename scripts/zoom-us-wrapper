@@ -35,7 +35,7 @@ cleanup_stopped_zoom_us_instances(){
   for c in $(${SUDO} docker ps -a -q)
   do
     image="$(${SUDO} docker inspect -f {{.Config.Image}} ${c})"
-    if [ "${image}" == "mdouchement/zoom-us:latest" ]; then
+    if [ "${image}" == "shemloft/zoom-us:latest" ]; then
       running=$(${SUDO} docker inspect -f {{.State.Running}} ${c})
       if [ "${running}" != "true" ]; then
         ${SUDO} docker rm "${c}" >/dev/null
@@ -119,8 +119,7 @@ echo "Starting ${prog}..."
 ${SUDO} docker run -d \
   ${ENV_VARS} \
   ${VIDEO_DEVICES} \
-  --device /dev/dri \
   ${VOLUMES} \
   ${ZOOM_EXTRA_DOCKER_ARGUMENTS} \
   --name zoomus \
-  mdouchement/zoom-us:latest ${prog} $@ >/dev/null
+  shemloft/zoom-us:latest ${prog} $@ >/dev/null
